@@ -1,0 +1,11 @@
+[package]
+name = "seeed-studio-relay-board"
+version = "0.1.0"
+authors = ["David \"Dregel\" Bengtsson <david@witchcult.se>"]
+description = "A library for controlling the Seeed Raspberry Pi Relay Board."
+keywords = ["seeed", "raspberry pi", "relay", "HAT", "i2c"]
+license = "MIT"
+repository = "https://github.com/Dregel/rust-seeed-studio-relay-board"
+
+[dependencies]
+i2c-linux = "*"
