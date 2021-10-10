@@ -11,20 +11,16 @@ pub struct RelayBoard {
 }
 
 impl RelayBoard {
-    pub fn new(addr: u8) -> Option<Self> {
-        match I2c::from_path("/dev/i2c-1") {
-            Ok(b) => {
-                Some(
-                    RelayBoard {
-                        num_relays: 4,
-                        dev_addr: addr,
-                        dev_reg_mode1: 0x60,
-                        dev_reg_data: 0xff,
-                        bus: b,
-                    }
-                )
-            },
-            Err(_) => None,
+    pub fn new(addr: u8) -> Self {
+        let mut b = I2c::from_path("/dev/i2c-1").unwrap();
+        b.smbus_set_slave_address(addr.into(), false).unwrap();
+
+        RelayBoard {
+            num_relays: 4,
+            dev_addr: addr,
+            dev_reg_mode1: 0x60,
+            dev_reg_data: 0xff,
+            bus: b,
         }
     }
 
@@ -32,7 +28,7 @@ impl RelayBoard {
         if relay_num <= self.num_relays && relay_num > 0{
             println!("Turning relay {} ON!", relay_num);
             self.dev_reg_data &= !(0x1 << (relay_num - 1));
-            self.bus.smbus_write_byte_data(self.dev_addr, self.dev_reg_data).unwrap();
+            self.bus.smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data).unwrap();
         } else {
             println!("Invalid relay #:{}!", relay_num);
         }
