@@ -50,6 +50,20 @@ impl RelayBoard {
         }
     }
 
+    pub fn relay_all_on(&mut self) {
+        self.dev_reg_data &= !(0xf << 0);
+        self.bus
+            .smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data)
+            .unwrap();
+    }
+
+    pub fn relay_all_off(&mut self) {
+        self.dev_reg_data |= 0xf << 0;
+        self.bus
+            .smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data)
+            .unwrap();
+    }
+
     fn relay_status(&mut self, relay_num: usize) -> bool {
         let d = self.read_reg_data();
 
