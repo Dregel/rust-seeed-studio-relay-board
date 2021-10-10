@@ -1,6 +1,6 @@
 [package]
 name = "seeed-studio-relay-board"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["David \"Dregel\" Bengtsson <david@witchcult.se>"]
 description = "A library for controlling the Seeed Raspberry Pi Relay Board."
 keywords = ["seeed", "raspberrypi", "relay", "HAT", "i2c"]

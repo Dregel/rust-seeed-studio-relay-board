@@ -18,7 +18,7 @@ impl RelayBoard {
         RelayBoard {
             num_relays: 4,
             dev_addr: addr,
-            dev_reg_mode1: 0x60,
+            dev_reg_mode1: 0x06,
             dev_reg_data: 0xff,
             bus: b,
         }
