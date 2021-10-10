@@ -34,7 +34,7 @@ impl RelayBoard {
         }
     }
 
-    pub fn relay_on(&mut self, relay_num: usize) {
+    pub fn relay_off(&mut self, relay_num: usize) {
         if relay_num <= self.num_relays && relay_num > 0{
             println!("Turning relay {} OFF!", relay_num);
             self.dev_reg_data |= (0x1 << (relay_num - 1));
