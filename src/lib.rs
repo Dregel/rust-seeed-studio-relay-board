@@ -25,22 +25,45 @@ impl RelayBoard {
     }
 
     pub fn relay_on(&mut self, relay_num: usize) {
-        if relay_num <= self.num_relays && relay_num > 0{
-            println!("Turning relay {} ON!", relay_num);
+        if relay_num <= self.num_relays && relay_num > 0 {
             self.dev_reg_data &= !(0x1 << (relay_num - 1));
-            self.bus.smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data).unwrap();
-        } else {
-            println!("Invalid relay #:{}!", relay_num);
+            self.bus
+                .smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data)
+                .unwrap();
         }
     }
 
     pub fn relay_off(&mut self, relay_num: usize) {
-        if relay_num <= self.num_relays && relay_num > 0{
-            println!("Turning relay {} OFF!", relay_num);
-            self.dev_reg_data |= (0x1 << (relay_num - 1));
-            self.bus.smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data).unwrap();
-        } else {
-            println!("Invalid relay #:{}!", relay_num);
+        if relay_num <= self.num_relays && relay_num > 0 {
+            self.dev_reg_data |= 0x1 << (relay_num - 1);
+            self.bus
+                .smbus_write_byte_data(self.dev_reg_mode1, self.dev_reg_data)
+                .unwrap();
         }
+    }
+
+    pub fn relay_toggle(&mut self, relay_num: usize) {
+        if self.relay_status(relay_num) {
+            self.relay_off(relay_num);
+        } else {
+            self.relay_on(relay_num);
+        }
+    }
+
+    fn relay_status(&mut self, relay_num: usize) -> bool {
+        let d = self.read_reg_data();
+
+        if d > 0 {
+            let mask = 1 << (relay_num - 1);
+
+            (self.dev_reg_data & mask) == 0
+        } else {
+            false
+        }
+    }
+
+    fn read_reg_data(&mut self) -> u8 {
+        self.dev_reg_data = self.bus.smbus_read_byte_data(self.dev_reg_mode1).unwrap();
+        self.dev_reg_data
     }
 }
