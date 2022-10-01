@@ -9,6 +9,7 @@ repository = "https://github.com/Dregel/rust-seeed-studio-relay-board"
 
 [dependencies]
 i2c-linux = "0.1.2"
+gameprng = "*"
 
 [[bin]]
 name = "lab"
